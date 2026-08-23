@@ -32,13 +32,22 @@ echo "==> 1/7 Contexte"
 echo "    paquet  : $PKG $VERSION"
 echo "    mode    : $([ -t 0 ] && echo 'terminal interactif' || echo 'non interactif (variables requises)')"
 
-echo "==> 2/7 Garde-fou : le nom est-il libre sur PyPI ?"
+echo "==> 2/7 Garde-fou : cette version est-elle déjà publiée ?"
+# PyPI refuse définitivement de réécrire une version : on vérifie AVANT de construire.
 CODE="$(curl -s -o /dev/null -w '%{http_code}' -m 15 "https://pypi.org/pypi/$PKG/json")"
-if [ "$CODE" = "200" ]; then
-  echo "    !! $PKG existe déjà sur PyPI."
-  confirm "Continuer quand même ?" FORCE_EXISTING || { echo "    Abandon."; exit 1; }
+if [ "$CODE" != "200" ]; then
+  echo "    Première publication de $PKG (nom libre)."
 else
-  echo "    OK — nom libre (HTTP $CODE)."
+  PUBLISHED="$(curl -s -m 15 "https://pypi.org/pypi/$PKG/json" \
+    | python3 -c "import sys,json; print(' '.join(sorted(json.load(sys.stdin)['releases'])))" 2>/dev/null || echo "")"
+  echo "    versions déjà en ligne : ${PUBLISHED:-inconnues}"
+  case " $PUBLISHED " in
+    *" $VERSION "*)
+      echo "    !! La version $VERSION est DÉJÀ publiée — PyPI refuse de la réécrire."
+      echo "    !! Incrémentez 'version' dans pyproject.toml puis relancez."
+      exit 1;;
+    *) echo "    OK — $VERSION n'est pas encore publiée.";;
+  esac
 fi
 
 echo "==> 3/7 Environnement de build"
