@@ -14,7 +14,7 @@ cd "$HERE"
 
 PKG="odoo-health-check"
 VERSION="$(grep -m1 '^version' pyproject.toml | cut -d'"' -f2)"
-DOCKER_REPO="${DOCKER_REPO:-jaikin/odoo-health-check}"
+DOCKER_REPO="${DOCKER_REPO:-jaikin-sasu/odoo-health-check}"
 VENV="$HERE/.venv"
 
 # Demande une confirmation. Sans TTY, s'appuie sur la variable passée en $2.

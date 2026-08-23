@@ -78,7 +78,7 @@ Codes de sortie : `0` conforme, `1` au moins un échec (ou un avertissement en
 ### Docker
 
 ```bash
-docker run --rm jaikin/odoo-health-check exemple.odoo.com
+docker run --rm jaikin-sasu/odoo-health-check exemple.odoo.com
 ```
 
 ### Comme bibliothèque
