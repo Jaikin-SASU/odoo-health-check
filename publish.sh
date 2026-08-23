@@ -60,7 +60,7 @@ if ! confirm "Publier $PKG $VERSION sur PyPI ?" PUBLISH_PYPI; then
   echo "    Pour publier : PUBLISH_PYPI=1 bash $HERE/publish.sh"
 elif [ ! -f "$HOME/.pypirc" ] && [ -z "${TWINE_PASSWORD:-}" ]; then
   echo "    !! Aucun identifiant disponible : ni ~/.pypirc ni TWINE_PASSWORD."
-  echo "    !! Créez ~/.pypirc (voir README_PUBLICATION.md), puis relancez."
+  echo "    !! Créez ~/.pypirc (voir la doc interne), puis relancez."
   exit 1
 else
   "$VENV/bin/python" -m twine upload --non-interactive "$HERE"/dist/*

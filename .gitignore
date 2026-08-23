@@ -6,3 +6,9 @@ build/
 .coverage
 .pytest_cache/
 .venv/
+
+# Procédures de publication internes (non distribuées)
+README_PUBLICATION.md
+setup-pypi-token.sh
+push-github.sh
+setup-docker-login.sh
