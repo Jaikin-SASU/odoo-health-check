@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    name: Tests (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Installer les dépendances de test
+        run: python -m pip install --upgrade pip pytest coverage
+
+      - name: Tests et couverture
+        env:
+          PYTHONPATH: src
+        run: |
+          coverage run --source=src/odoo_health_check -m pytest tests/ -q
+          coverage report -m --fail-under=80
+
+  package:
+    name: Construction du paquet
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip build twine
+      - run: python -m build
+      - run: python -m twine check dist/*
+
+  docker:
+    name: Image Docker
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Construire l'image
+        run: docker build -t odoo-health-check:ci .
+      - name: Vérifier que l'entrypoint répond
+        run: docker run --rm odoo-health-check:ci --help
+      - name: Vérifier que le conteneur ne tourne pas en root
+        run: |
+          uid=$(docker run --rm --entrypoint id odoo-health-check:ci -u)
+          echo "uid=$uid"
+          [ "$uid" -ne 0 ]
