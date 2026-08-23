@@ -1,5 +1,9 @@
 # odoo-health-check
 
+[![CI](https://github.com/Jaikin-SASU/odoo-health-check/actions/workflows/ci.yml/badge.svg)](https://github.com/Jaikin-SASU/odoo-health-check/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/odoo-health-check)](https://pypi.org/project/odoo-health-check/)
+[![Python](https://img.shields.io/pypi/pyversions/odoo-health-check)](https://pypi.org/project/odoo-health-check/)
+
 Audite une instance Odoo publique en une commande : indexabilité, exposition du
 gestionnaire de bases, en-têtes de sécurité, version et sitemap.
 
