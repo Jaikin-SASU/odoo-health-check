@@ -1,0 +1,11 @@
+site_name: odoo-health-check
+site_description: Audite une instance Odoo publique — indexabilité, exposition, sécurité.
+site_url: https://odoo-health-check.readthedocs.io
+repo_url: https://github.com/Jaikin-SASU/odoo-health-check
+theme:
+  name: material
+  language: fr
+nav:
+  - Accueil: index.md
+  - Vérifications: checks.md
+  - Utilisation: usage.md

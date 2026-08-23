@@ -1,0 +1,36 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "odoo-health-check"
+version = "0.1.0"
+description = "Audite une instance Odoo publique : indexabilité, exposition, en-têtes de sécurité et version."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Victor Gless-Krumhorn", email = "victor@jaikin.eu" }]
+keywords = ["odoo", "audit", "seo", "security", "health-check", "erp"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Environment :: Console",
+  "Intended Audience :: System Administrators",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Topic :: System :: Monitoring",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://jaikin.eu"
+Documentation = "https://odoo-health-check.readthedocs.io"
+Source = "https://github.com/Jaikin-SASU/odoo-health-check"
+
+[project.scripts]
+odoo-health-check = "odoo_health_check.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/odoo_health_check"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
