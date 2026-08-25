@@ -121,6 +121,8 @@ Aucune dépendance d'exécution : uniquement la bibliothèque standard.
 
 ## Auteur
 
+[<img src="https://raw.githubusercontent.com/Jaikin-SASU/.github/master/assets/banner.png" width="760" alt="JAIKIN — ESN &amp; agence Intelligence Artificielle" />](https://jaikin.eu/?utm_source=github&utm_medium=readme&utm_campaign=oss)
+
 Développé par [JAIKIN](https://jaikin.eu), ESN et agence IA près de Strasbourg —
 intelligence artificielle, data, développement sur mesure et intégration Odoo.
 
