@@ -121,8 +121,10 @@ Aucune dépendance d'exécution : uniquement la bibliothèque standard.
 
 ## Auteur
 
-Développé par [JAIKIN](https://jaikin.eu), ESN et agence IA près de Strasbourg —
-intelligence artificielle, data, développement sur mesure et intégration Odoo.
+Développé par [JAIKIN](https://www.jaikin.eu/), agence IA, Odoo et logiciels sur mesure
+près de Strasbourg : [intégration et migration Odoo](https://www.jaikin.eu/integrateur-odoo-france),
+[agents IA et automatisation](https://www.jaikin.eu/automatisation-ia) et
+[développement de logiciels sur mesure](https://www.jaikin.eu/developpement-logiciel-sur-mesure).
 
 Cet outil est extrait de notre pratique d'intégration : les vérifications qu'il
 automatise sont celles que nous faisions à la main sur chaque instance livrée.
