@@ -85,6 +85,20 @@ Codes de sortie : `0` conforme, `1` au moins un échec (ou un avertissement en
 docker run --rm jaikinsasu/odoo-health-check exemple.odoo.com
 ```
 
+L'image est aussi publiée sur [Quay](https://quay.io/repository/jaikin/odoo-health-check) :
+`docker run --rm quay.io/jaikin/odoo-health-check exemple.odoo.com`.
+
+### Kubernetes (Helm)
+
+Un chart Helm installe l'audit en `CronJob` planifié (dossier [`charts/odoo-health-check`](charts/odoo-health-check)) :
+
+```bash
+helm repo add jaikin https://jaikin-sasu.github.io/odoo-health-check
+helm install odoo-audit jaikin/odoo-health-check --set target.url=https://exemple.odoo.com
+```
+
+Le Job se termine en erreur (code 1) dès qu'une vérification échoue : une alerte sur les Jobs en échec suffit à être prévenu.
+
 ### Comme bibliothèque
 
 ```python
