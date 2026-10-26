@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>odoo-health-check Helm chart</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font: 16px/1.6 system-ui, sans-serif; max-width: 42rem; margin: 0 auto; padding: 2rem 1rem; }
+  pre { overflow-x: auto; padding: 1rem; border-radius: 6px; background: rgba(127,127,127,.15); }
+</style>
+</head>
+<body>
+<h1>odoo-health-check Helm chart</h1>
+<p>Scheduled audit (Kubernetes CronJob) of a public Odoo instance: search-engine indexability, database manager exposure, security headers, version and sitemap.</p>
+<pre>helm repo add jaikin https://jaikin-sasu.github.io/odoo-health-check
+helm repo update
+helm install odoo-audit jaikin/odoo-health-check \
+  --set target.url=https://example.odoo.com</pre>
+<p>Source code and documentation: <a href="https://github.com/Jaikin-SASU/odoo-health-check">github.com/Jaikin-SASU/odoo-health-check</a>.</p>
+<p>Built by <a href="https://www.jaikin.eu/integrateur-odoo-france">JAIKIN</a>, Odoo integration and AI agents for SMEs.</p>
+</body>
+</html>
