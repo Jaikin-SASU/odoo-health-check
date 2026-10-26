@@ -1,0 +1,72 @@
+# Default values for odoo-health-check.
+# The audit only sends GET requests on public paths. Audit only Odoo instances
+# you own or are explicitly authorised to test.
+
+target:
+  # Public URL of the Odoo instance to audit, e.g. https://example.odoo.com.
+  # Required, unless urlFromSecret.name is set.
+  url: ""
+  # Read the URL from an existing Secret instead (takes precedence over "url").
+  urlFromSecret:
+    name: ""
+    key: url
+
+audit:
+  # Network timeout in seconds.
+  timeout: 15
+  # Exit with an error as soon as a warning is raised (not only on failures).
+  strict: false
+  # Do not verify the TLS certificate of the target.
+  insecure: false
+  # Print the report as JSON instead of text.
+  json: false
+
+# Cron schedule of the audit (default: every Monday at 06:00).
+schedule: "0 6 * * 1"
+# IANA time zone of the schedule, e.g. Europe/Paris (Kubernetes >= 1.27). Empty = controller time zone.
+timeZone: ""
+suspend: false
+concurrencyPolicy: Forbid
+successfulJobsHistoryLimit: 3
+failedJobsHistoryLimit: 3
+# A failed audit must stay visible: no retry by default.
+backoffLimit: 0
+activeDeadlineSeconds: 300
+
+image:
+  repository: quay.io/jaikin/odoo-health-check
+  # Defaults to the chart appVersion.
+  tag: ""
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 10001
+  runAsGroup: 10001
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+      - ALL
+
+resources:
+  requests:
+    cpu: 10m
+    memory: 32Mi
+  limits:
+    memory: 128Mi
+
+nodeSelector: {}
+tolerations: []
+affinity: {}

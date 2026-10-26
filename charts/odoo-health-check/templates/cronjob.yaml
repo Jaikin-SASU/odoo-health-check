@@ -1,0 +1,86 @@
+{{- $secretName := .Values.target.urlFromSecret.name -}}
+{{- if and (not $secretName) (not .Values.target.url) -}}
+{{- fail "Set target.url (the public URL of the Odoo instance to audit) or target.urlFromSecret.name" -}}
+{{- end -}}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "odoo-health-check.fullname" . }}
+  labels:
+    {{- include "odoo-health-check.labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.schedule | quote }}
+  {{- if .Values.timeZone }}
+  timeZone: {{ .Values.timeZone | quote }}
+  {{- end }}
+  suspend: {{ .Values.suspend }}
+  concurrencyPolicy: {{ .Values.concurrencyPolicy }}
+  successfulJobsHistoryLimit: {{ .Values.successfulJobsHistoryLimit }}
+  failedJobsHistoryLimit: {{ .Values.failedJobsHistoryLimit }}
+  jobTemplate:
+    spec:
+      backoffLimit: {{ .Values.backoffLimit }}
+      activeDeadlineSeconds: {{ .Values.activeDeadlineSeconds }}
+      template:
+        metadata:
+          labels:
+            {{- include "odoo-health-check.selectorLabels" . | nindent 12 }}
+            {{- with .Values.podLabels }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          {{- with .Values.podAnnotations }}
+          annotations:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+        spec:
+          restartPolicy: Never
+          automountServiceAccountToken: false
+          {{- with .Values.imagePullSecrets }}
+          imagePullSecrets:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          securityContext:
+            {{- toYaml .Values.podSecurityContext | nindent 12 }}
+          containers:
+            - name: {{ .Chart.Name }}
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              securityContext:
+                {{- toYaml .Values.securityContext | nindent 16 }}
+              env:
+                - name: TARGET_URL
+                  {{- if $secretName }}
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ $secretName }}
+                      key: {{ .Values.target.urlFromSecret.key }}
+                  {{- else }}
+                  value: {{ .Values.target.url | quote }}
+                  {{- end }}
+              args:
+                - "--timeout"
+                - {{ .Values.audit.timeout | quote }}
+                {{- if .Values.audit.strict }}
+                - "--strict"
+                {{- end }}
+                {{- if .Values.audit.insecure }}
+                - "--insecure"
+                {{- end }}
+                {{- if .Values.audit.json }}
+                - "--json"
+                {{- end }}
+                - "$(TARGET_URL)"
+              resources:
+                {{- toYaml .Values.resources | nindent 16 }}
+          {{- with .Values.nodeSelector }}
+          nodeSelector:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.affinity }}
+          affinity:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.tolerations }}
+          tolerations:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}

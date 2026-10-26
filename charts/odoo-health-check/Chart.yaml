@@ -1,0 +1,34 @@
+apiVersion: v2
+name: odoo-health-check
+description: Scheduled audit (CronJob) of a public Odoo instance - search-engine indexability, database manager exposure, security headers, version and sitemap.
+type: application
+version: 0.1.0
+appVersion: "0.1.1"
+kubeVersion: ">=1.21.0-0"
+home: https://www.jaikin.eu/integrateur-odoo-france
+icon: https://jaikin-sasu.github.io/odoo-health-check/logo.png
+sources:
+  - https://github.com/Jaikin-SASU/odoo-health-check
+keywords:
+  - odoo
+  - audit
+  - healthcheck
+  - seo
+  - security-headers
+  - cronjob
+maintainers:
+  - name: JAIKIN
+    url: https://www.jaikin.eu/
+annotations:
+  artifacthub.io/license: MIT
+  artifacthub.io/category: monitoring-logging
+  artifacthub.io/images: |
+    - name: odoo-health-check
+      image: quay.io/jaikin/odoo-health-check:0.1.1
+  artifacthub.io/links: |
+    - name: Source code
+      url: https://github.com/Jaikin-SASU/odoo-health-check
+    - name: Container image
+      url: https://quay.io/repository/jaikin/odoo-health-check
+    - name: JAIKIN, Odoo integration
+      url: https://www.jaikin.eu/integrateur-odoo-france

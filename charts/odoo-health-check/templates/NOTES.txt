@@ -1,0 +1,11 @@
+The audit of {{ if .Values.target.urlFromSecret.name }}the URL stored in Secret "{{ .Values.target.urlFromSecret.name }}"{{ else }}{{ .Values.target.url }}{{ end }} runs on schedule "{{ .Values.schedule }}".
+
+Run it once now:
+
+  kubectl create job --from=cronjob/{{ include "odoo-health-check.fullname" . }} {{ include "odoo-health-check.fullname" . }}-manual -n {{ .Release.Namespace }}
+
+Read the report:
+
+  kubectl logs -n {{ .Release.Namespace }} job/{{ include "odoo-health-check.fullname" . }}-manual
+
+A Job ends in error (exit code 1) when a check fails, or a warning with audit.strict=true; exit code 2 means the target was unreachable.
